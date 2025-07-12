@@ -11,7 +11,7 @@ local DataKeys = {
 	Playtime = {
 		name = "Playtime",
 		type_ = "IntValue",
-		defaultData = 2
+		defaultData = 0
 	}
 }
 
