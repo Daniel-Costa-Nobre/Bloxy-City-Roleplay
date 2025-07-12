@@ -6,7 +6,7 @@ local platesfolder = workspace.Place.LocationPlates:GetChildren()
 -- Structures folder
 local structuresFolder = workspace.Place.Houses
 
--- Possible House-Like Structures
+-- Possible Structures
 local possibleStructures = {
 	"MinimalHouse",
 }
@@ -170,7 +170,7 @@ local styleKeys = {"Modern", "Classic", "Industrial", "Rustic", "Luxury", "Anate
 for index, plate in pairs(platesfolder) do
 	if plate.Name == "Plate" then
 		-- Get Required Structure Builder
-		local constructor = require(workspace.Assets.StructureBuilders:FindFirstChild(plate:GetAttribute("Structure")))
+		local constructor = require(script.Parent.Parent.StructureBuilders:FindFirstChild(plate:GetAttribute("Structure")))
 
 		-- Build Basic Structure (Structure with all bricks, structural rods, light systems, placeholders and texture pannels)
 		local newStructure = constructor.buildBasicStructure(plate, MinimalHouseBasicElementSets["default"], structuresFolder)
