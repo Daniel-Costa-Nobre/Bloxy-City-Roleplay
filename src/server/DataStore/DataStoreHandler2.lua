@@ -74,7 +74,7 @@ end
 function DataStoreHandler.resetPlayerData(player)
     -- Resets all player data to nil
     local success = pcall(function()
-        return DataStore:SetAsync(getId(player), nil)
+        return DataStore:SetAsync(getId(player), {})
     end)
 
     if success then

@@ -1,5 +1,5 @@
 -- Build basic structures
-
+--[[
 -- Get plates
 local platesfolder = workspace.Place.LocationPlates:GetChildren()
 
@@ -191,3 +191,4 @@ for index, plate in pairs(platesfolder) do
 		task.wait(0.1)
 	end
 end
+]]
