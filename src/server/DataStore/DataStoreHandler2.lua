@@ -19,7 +19,7 @@ local function getFullData(player)
     if success and data then 
         return data
     else
-        print("Failed fetching the user's Id ", getId(player), "data.")
+        print("Error. Failed fetching the user's Id ", getId(player), "data.")
         return nil
     end
 end
@@ -30,7 +30,7 @@ local function setFullData(player, value)
         DataStore:SetAsync(getId(player), value)
     end)
 
-    if sucess then return true else print("Failed to set the user's Id ", getId(player), "data.") return false end
+    if sucess then return true else print("Error. Failed to set the user's Id ", getId(player), "data.") return false end
 end
 
 -- Practical Functions
@@ -38,25 +38,38 @@ function DataStoreHandler.changeData(player, key, value)
     -- Get full table
     local data = getFullData(player)
 
-    if data then
-        -- Find and change key
-        local sucess = pcall(function()
-            data[key] = value
-        end)
-
-        if sucess then
-            -- Try to change inside database
-            local procedureAnswer = setFullData(player, data)
-            return procedureAnswer
-        else
-            print("Key not found")
-            return false
-        end
+    if #data == 0 then
+        print("Player datastore is currently empty.")
     end
+    -- Communicate if the key was not there before
+    if not data[key] then
+        print("Adding new key...")
+    end
+    -- Find and change key
+    data[key] = value
+
+    -- Try to change inside database
+    local procedureAnswer = setFullData(player, data)
+    return procedureAnswer
+
 end
 
 function DataStoreHandler.loadData(player, key)
-    -- Build here a function that loads the given key data (returns value)
+    -- Get full table
+    local data = getFullData(player)
+
+    -- Try to fetch value from key
+    local success, value = pcall(function()
+        return data[key]
+    end)
+
+    -- Return value if possible
+    if success and value then
+        return value
+    else
+        print("Error. Key not found.")
+        return false
+    end
 end
 
 function DataStoreHandler.deleteKey(player, key)
