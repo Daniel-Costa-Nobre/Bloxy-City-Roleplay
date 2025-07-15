@@ -19,7 +19,7 @@ local function getFullData(player)
     if success and data then 
         return data
     else
-        print("Failed fetching the user's Id ", getId(player), "data. ")
+        print("Failed fetching the user's Id ", getId(player), "data.")
         return nil
     end
 end
@@ -27,6 +27,23 @@ end
 -- Practical Functions
 function DataStoreHandler.changeData(player, key, value)
     -- Get full table
+    local data = getFullData(player)
+
+    if data then
+        -- Find and change key
+        local sucess = pcall(function()
+            data[key] = value
+        end)
+
+        if sucess then
+            -- Try to change inside database
+            -- local procedureAnswer = setFullData(player, data)
+            -- return procedureAnswer
+        else
+            print("Key not found")
+            return false
+        end
+    end
 end
 
 function DataStoreHandler.loadData(player, key)
