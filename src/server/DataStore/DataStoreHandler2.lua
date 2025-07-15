@@ -63,15 +63,15 @@ function DataStoreHandler.loadData(player, key)
 
     -- Try to fetch value from key
     if data and data[key] ~= nil then
-        return data[key]
+        return data[key], true
     else
         warn("Error. Key not found or empty.")
-        return nil
+        return nil, nil
     end
 end
 
 -- Tecnical Diagnostic Functions
-function DataStoreHandler.resetPlayerData(player)
+function DataStoreHandler.clearPlayerData(player)
     -- Resets all player data to nil
     local success = pcall(function()
         return DataStore:SetAsync(getId(player), {})
