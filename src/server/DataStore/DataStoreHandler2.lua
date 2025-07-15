@@ -4,9 +4,29 @@ local DataStoreHandler = {}
 local DataStoreService = game:GetService("DataStoreService")
 local DataStore = DataStoreService:GetDataStore("PlayerDataStore")
 
+-- Returns the id of the player (local help)
+local function getId(player)
+    local id = player.UserId
+    return id
+end
+
+-- Returns the full data table from the player Id (local help)
+local function getFullData(player)
+    local success, data = pcall(function()
+        return DataStore:GetAsync(tostring(getId(player)))
+    end)
+    
+    if success and data then 
+        return data
+    else
+        print("Failed fetching the user's Id ", getId(player), "data. ")
+        return nil
+    end
+end
+
 -- Practical Functions
 function DataStoreHandler.changeData(player, key, value)
-    -- Build here a function that changes the given key data
+    -- Get full table
 end
 
 function DataStoreHandler.loadData(player, key)
