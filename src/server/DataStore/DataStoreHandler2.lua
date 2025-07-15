@@ -72,17 +72,13 @@ function DataStoreHandler.loadData(player, key)
     end
 end
 
-function DataStoreHandler.deleteKey(player, key)
-    -- Build here a function that deletes the given key
-end
-
-function DataStoreHandler.addKey(player, key, value)
-    -- Build here a function that adds a requested key
-end
-
 -- Tecnical Diagnostic Functions
 function DataStoreHandler.resetPlayerData(playerId)
     -- Build here a function that resets all player data to nil
+end
+
+function DataStoreHandler.deleteKey(playerId, key)
+    -- Build here a function that deletes the given key
 end
 
 return DataStoreHandler
