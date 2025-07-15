@@ -165,12 +165,12 @@ function Constructor.buildBasicElements(newHouse)
 	local house = newHouse
 	
 	-- Set Basic Elements models
-	local door = newHouse:GetAttribute("DoorType")
-	local windowA = newHouse:GetAttribute("WindowAType")
-	local windowB = newHouse:GetAttribute("WindowBType")
-	local garageDoor = newHouse:GetAttribute("GarageDoorType")
-	local light = newHouse:GetAttribute("LightType")
-	local mailBox = newHouse:GetAttribute("MailBoxType")
+	local door = workspace.Assets.Models:FindFirstChild(house:GetAttribute("DoorType"))
+	local windowA = workspace.Assets.Models:FindFirstChild(house:GetAttribute("WindowAType"))
+	local windowB = workspace.Assets.Models:FindFirstChild(house:GetAttribute("WindowBType"))
+	local garageDoor = workspace.Assets.Models:FindFirstChild(house:GetAttribute("GarageDoorType"))
+	local light = workspace.Assets.Models:FindFirstChild(house:GetAttribute("LightType"))
+	local mailBox = workspace.Assets.Models:FindFirstChild(house:GetAttribute("MailBoxType"))
 	
 	-- Build doors
 	for _, doorPlaceHolder in pairs(house.Doors:GetChildren()) do
