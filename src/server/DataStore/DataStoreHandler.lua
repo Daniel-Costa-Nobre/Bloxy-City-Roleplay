@@ -1,84 +1,101 @@
 local DataStoreHandler = {}
+
+-- Getting Data Store
 local DataStoreService = game:GetService("DataStoreService")
-local playerDataStore = DataStoreService:GetDataStore("PlayerData")
+local DataStore = DataStoreService:GetDataStore("PlayerDataStore")
 
--- Return loaded playerData
-function DataStoreHandler.loadPlayerData(player)
-	local success, data = pcall(function()
-		return playerDataStore:GetAsync(player.UserId)
-	end)
-	if success then
-		return data
-	else
-		warn("Failed to load player data for player: " .. player.Name .. " due to error: " .. data)
-		return nil
-	end
+-- Returns the id of the player (local help)
+local function getId(player)
+    local id = player.UserId
+    return id
 end
 
--- Update a key with a new value
-function DataStoreHandler.updateKey(player, key, value)
-	local success, error = pcall(function()
-		playerDataStore:UpdateAsync(player.UserId, function(data)
-			data = data or {}  -- Ensure data is not nil
-			data[key] = value
-			return data
-		end)
-	end)
-	if not success then
-		warn("Failed to update key: " .. key .. " for player: " .. player.Name .. " with value: " .. value .. " due to error: " .. error)
-		return nil
-	else
-		return true
-	end
+-- Returns the full data table from the player Id (local help)
+local function getFullData(player)
+    local success, data = pcall(function()
+        return DataStore:GetAsync(tostring(getId(player)))
+    end)
+    
+    if success and data then 
+        return data
+    else
+        warn("Error. Failed fetching the user's Id ", getId(player), "data.")
+        return nil
+    end
 end
 
-function DataStoreHandler.getKey(player, key, blindWarn)
-	local success, data = pcall(function()
-		return playerDataStore:GetAsync(player.UserId)
-	end)
-	if success then
-		if data then
-			return data[key]
-		else
-			return nil
-		end
-	else
-		if not blindWarn then
-			warn("Failed to get key: " .. key .. " for player: " .. player.Name .. " due to error: " .. data)
-		end
-		return false
-	end
-end
--- Remove a key (use in playtesting and in some issues)
-function DataStoreHandler.removeKey(player, key)
-	local success, error = pcall(function()
-		playerDataStore:UpdateAsync(player.UserId, function(data)
-			data[key] = nil
-			return data
-		end)
-	end)
-	if not success then
-		warn("Failed to remove key: " .. key .. " for player: " .. player.Name .. " due to error: " .. error)
-		return nil
-	end
+-- Changes the full data table of the player Id (local help)
+local function setFullData(player, value)
+    local success = pcall(function()
+        DataStore:SetAsync(tostring(getId(player)), value)
+    end)
+
+    if success then return true else warn("Error. Failed to set the user's Id ", getId(player), "data.") return nil end
 end
 
---  Increment an integer value key
-function DataStoreHandler.incrementIntegerKey(player, key, num)
-	local success, error = pcall(function()
-		playerDataStore:UpdateAsync(player.UserId, function(data)
-			if data[key] then
-				data[key] = data[key] + num
-			else
-				data[key] = num
-			end
-			return data
-		end)
-	end)
-	if not success then
-		warn("Failed to increment integer key: " .. key .. " for player: " .. player.Name .. " due to error: " .. error)
-		return nil
-	end
+-- Practical Functions
+function DataStoreHandler.changeData(player, key, value)
+    -- Get full table
+    local data = getFullData(player)
+
+    if data == nil then
+        print("Player datastore is currently empty.")
+        data = {}
+    end
+
+    -- Communicate if the key was not there before
+    if not data[key] then
+        print("Adding new key...")
+    end
+
+    -- Find and change key
+    data[key] = value
+
+    -- Try to change inside database
+    local procedureAnswer = setFullData(player, data)
+    return procedureAnswer
+
+end
+
+function DataStoreHandler.loadData(player, key)
+    -- Get full table
+    local data = getFullData(player) or {}
+
+    -- Try to fetch value from key
+    if data and data[key] ~= nil then
+        return data[key], true
+    else
+        warn("Error. Key not found or empty.")
+        return nil, nil
+    end
+end
+
+-- Tecnical Diagnostic Functions
+function DataStoreHandler.clearPlayerData(player)
+    -- Resets all player data to nil
+    local success = pcall(function()
+        return DataStore:SetAsync(getId(player), {})
+    end)
+
+    if success then
+        print("All player data deleted.")
+    else
+        warn("Error. Failed to delete player data.")
+    end
+end
+
+function DataStoreHandler.deleteKey(player, key)
+    -- Get table
+    local data = getFullData(player) or {}
+
+    -- Delete data
+    print("Deleting key \"" .. key .. "\" that contains \"" .. tostring(data[key]) .. "\" value...")
+    data[key] = nil
+
+    -- Update database
+    local procedureAnswer = setFullData(player, data)
+
+    if procedureAnswer then print("Key deleted.") end
 end
 
 return DataStoreHandler
