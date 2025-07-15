@@ -1,8 +1,15 @@
--- !!!This is the MINIMAL HOUSE constructor!!!-- !!!This is the MINIMAL HOUSE constructor!!!-- !!!This is the MINIMAL HOUSE constructor!!!-- !!!This is the MINIMAL HOUSE constructor!!!
 local Constructor = {}
 
 -- Creates basic Structure for the minimal house
 function Constructor.buildBasicStructure(plate, attributes, parent)
+	-- Check if function was called correctly
+	if not (plate and attributes and parent) then
+		warn("Error. Paramethers not declared or empty.")
+		warn("Plate: ", plate)
+		warn("Attributes:", attributes)
+		warn("Parent: ", parent)
+	end
+
 	-- Create new house
 	local houseModel = workspace.Assets.Structures.MinimalHouse
 	local newHouse = houseModel:Clone()
@@ -16,7 +23,7 @@ function Constructor.buildBasicStructure(plate, attributes, parent)
 	-- Ensure the model has a PrimaryPart
 	if newHouse.PrimaryPart then
 		-- Compute new position and orientation
-		local newPosition = CFrame.new(plate.Position) -- Directly use plate.Position (simpler)
+		local newPosition = CFrame.new(plate.Position)
 		local newOrientation = CFrame.Angles(
 			math.rad(plate.Orientation.X), 
 			math.rad(plate.Orientation.Y), 
@@ -26,16 +33,15 @@ function Constructor.buildBasicStructure(plate, attributes, parent)
 		-- Move the house
 		newHouse:PivotTo(newPosition * newOrientation)
 	else
-		warn("New house has no PrimaryPart set!")
+		warn("Error. New house has no PrimaryPart set")
 	end
 	
-	-- Set all attributes if they were declared (for the basic elements
-	if attributes then
-		local attributes = attributes
+	-- Set all attributes if they were declared
+
+	local attributes = attributes
 		
-		for name, attribute in pairs(attributes) do
-			newHouse:SetAttribute(name, attribute)
-		end
+	for name, attribute in pairs(attributes) do
+		newHouse:SetAttribute(name, attribute)
 	end
 	
 	-- Return the house location to the variable assigned
@@ -141,7 +147,7 @@ function Constructor.buildWallTextures(newHouse, style)
 		floorPannel.Color = floorColor
 		floorPannel.Material = floorTexture
 	else
-		print("No style assigned")
+		warn("No style assigned.")
 	end
 end
 
@@ -159,16 +165,16 @@ function Constructor.buildBasicElements(newHouse)
 	local house = newHouse
 	
 	-- Set Basic Elements models
-	local door = workspace.Assets.Models:FindFirstChild(house:GetAttribute("DoorType"))
-	local windowA = workspace.Assets.Models:FindFirstChild(house:GetAttribute("WindowAType"))
-	local windowB = workspace.Assets.Models:FindFirstChild(house:GetAttribute("WindowBType"))
-	local garageDoor = workspace.Assets.Models:FindFirstChild(house:GetAttribute("GarageDoorType"))
-	local light = workspace.Assets.Models:FindFirstChild(house:GetAttribute("LightType"))
-	local mailBox = workspace.Assets.Models:FindFirstChild(house:GetAttribute("MailBoxType"))
+	local door = newHouse:GetAttribute("DoorType")
+	local windowA = newHouse:GetAttribute("WindowAType")
+	local windowB = newHouse:GetAttribute("WindowBType")
+	local garageDoor = newHouse:GetAttribute("GarageDoorType")
+	local light = newHouse:GetAttribute("LightType")
+	local mailBox = newHouse:GetAttribute("MailBoxType")
 	
 	-- Build doors
 	for _, doorPlaceHolder in pairs(house.Doors:GetChildren()) do
-		-- Clear existing children (only if needed)	
+		-- Clear existing children (only if needed)
 		if #(doorPlaceHolder:GetChildren()) > 0 then
 			doorPlaceHolder:ClearAllChildren()
 		end
@@ -191,7 +197,7 @@ function Constructor.buildBasicElements(newHouse)
 			-- Parent new door to the placeholder
 			newDoor.Parent = doorPlaceHolder
 		else
-			warn("New door has no PrimaryPart set!")
+			warn("Error. New door has no PrimaryPart set.")
 			newDoor:Destroy()
 		end
 
@@ -217,7 +223,7 @@ function Constructor.buildBasicElements(newHouse)
 		
 		-- Clone the window before applying transformations
 		local newWindow
-		-- Clone the window before applying transformations
+		
 		if isWindowA then
 			newWindow = windowA:Clone()
 		else
@@ -238,7 +244,7 @@ function Constructor.buildBasicElements(newHouse)
 			-- Parent new window to the placeholder
 			newWindow.Parent = windowPlaceHolder
 		else
-			warn("New window has no PrimaryPart set!")
+			warn("Error. New window has no PrimaryPart set.")
 			newWindow:Destroy()
 		end
 	end
@@ -267,7 +273,7 @@ function Constructor.buildBasicElements(newHouse)
 		-- Parent new garage door to the placeholder
 		newGarageDoor.Parent = garageDoorPlaceHolder
 	else
-		warn("New garage has no PrimaryPart set!")
+		warn("Error. New garage has no PrimaryPart set.")
 		newGarageDoor:Destroy()
 	end
 	
@@ -297,7 +303,7 @@ function Constructor.buildBasicElements(newHouse)
 			-- Parent new light to the placeholder
 			newLight.Parent = lightPlaceHolder
 		else
-			warn("New Light has no PrimaryPart set!")
+			warn("Error. New Light has no PrimaryPart set.")
 			newLight:Destroy()
 		end
 		
@@ -329,13 +335,12 @@ function Constructor.buildBasicElements(newHouse)
 		-- Parent new garage door to the placeholder
 		newMailBox.Parent = mailBoxPlaceHolder
 	else
-		warn("New garage has no PrimaryPart set!")
+		warn("Error. New garage has no PrimaryPart set.")
 		newMailBox:Destroy()
 	end
 
 	-- Keep placeholder but make it invisible
 	mailBoxPlaceHolder.Transparency = 1
-	
 end
 
 return Constructor
