@@ -24,6 +24,15 @@ local function getFullData(player)
     end
 end
 
+-- Changes the full data table of the player Id (local help)
+local function setFullData(player, value)
+    local sucess = pcall(function()
+        DataStore:SetAsync(getId(player), value)
+    end)
+
+    if sucess then return true else print("Failed to set the user's Id ", getId(player), "data.") return false end
+end
+
 -- Practical Functions
 function DataStoreHandler.changeData(player, key, value)
     -- Get full table
@@ -37,8 +46,8 @@ function DataStoreHandler.changeData(player, key, value)
 
         if sucess then
             -- Try to change inside database
-            -- local procedureAnswer = setFullData(player, data)
-            -- return procedureAnswer
+            local procedureAnswer = setFullData(player, data)
+            return procedureAnswer
         else
             print("Key not found")
             return false
