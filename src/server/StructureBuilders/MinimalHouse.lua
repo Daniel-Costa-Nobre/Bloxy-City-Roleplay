@@ -4,48 +4,50 @@ local Constructor = {}
 function Constructor.buildBasicStructure(plate, attributes, parent)
 	-- Check if function was called correctly
 	if not (plate and attributes and parent) then
-		warn("Error. Paramethers not declared or empty.")
+		warn("Error. Paramethers not obtained.")
 		warn("Plate: ", plate)
-		warn("Attributes:", attributes)
+		warn("Attributes: ", attributes)
 		warn("Parent: ", parent)
-	end
 
-	-- Create new house
-	local houseModel = workspace.Assets.Structures.MinimalHouse
-	local newHouse = houseModel:Clone()
-	newHouse.Parent = parent
-
-	-- Set the Id based on the plate
-	local Id = plate:GetAttribute("Id")
-	newHouse:SetAttribute("Id", Id)
-	newHouse.HouseNumPannel.SurfaceGui.TextLabel.Text = Id
-	
-	-- Ensure the model has a PrimaryPart
-	if newHouse.PrimaryPart then
-		-- Compute new position and orientation
-		local newPosition = CFrame.new(plate.Position)
-		local newOrientation = CFrame.Angles(
-			math.rad(plate.Orientation.X), 
-			math.rad(plate.Orientation.Y), 
-			math.rad(plate.Orientation.Z)
-		)
-
-		-- Move the house
-		newHouse:PivotTo(newPosition * newOrientation)
+		return false
 	else
-		warn("Error. New house has no PrimaryPart set")
-	end
-	
-	-- Set all attributes if they were declared
+		-- Create new house
+		local houseModel = workspace.Assets.Structures.MinimalHouse
+		local newHouse = houseModel:Clone()
+		newHouse.Parent = parent
 
-	local attributes = attributes
+		-- Set the Id based on the plate
+		local Id = plate:GetAttribute("Id")
+		newHouse:SetAttribute("Id", Id)
+		newHouse.HouseNumPannel.SurfaceGui.TextLabel.Text = Id
 		
-	for name, attribute in pairs(attributes) do
-		newHouse:SetAttribute(name, attribute)
+		-- Ensure the model has a PrimaryPart
+		if newHouse.PrimaryPart then
+			-- Compute new position and orientation
+			local newPosition = CFrame.new(plate.Position)
+			local newOrientation = CFrame.Angles(
+				math.rad(plate.Orientation.X), 
+				math.rad(plate.Orientation.Y), 
+				math.rad(plate.Orientation.Z)
+			)
+
+			-- Move the house
+			newHouse:PivotTo(newPosition * newOrientation)
+		else
+			warn("Error. New house has no PrimaryPart set")
+		end
+		
+		-- Set all attributes if they were declared
+
+		local attributes = attributes
+			
+		for name, attribute in pairs(attributes) do
+			newHouse:SetAttribute(name, attribute)
+		end
+		
+		-- Return the house location to the variable assigned
+		return newHouse
 	end
-	
-	-- Return the house location to the variable assigned
-	return newHouse
 end
 
 -- Changes the texture and the color of the texture pannels of the house
