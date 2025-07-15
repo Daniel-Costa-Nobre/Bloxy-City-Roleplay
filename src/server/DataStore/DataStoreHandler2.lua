@@ -19,7 +19,7 @@ local function getFullData(player)
     if success and data then 
         return data
     else
-        print("Error. Failed fetching the user's Id ", getId(player), "data.")
+        warn("Error. Failed fetching the user's Id ", getId(player), "data.")
         return nil
     end
 end
@@ -30,7 +30,7 @@ local function setFullData(player, value)
         DataStore:SetAsync(getId(player), value)
     end)
 
-    if sucess then return true else print("Error. Failed to set the user's Id ", getId(player), "data.") return false end
+    if sucess then return true else warn("Error. Failed to set the user's Id ", getId(player), "data.") return false end
 end
 
 -- Practical Functions
@@ -67,7 +67,7 @@ function DataStoreHandler.loadData(player, key)
     if success and value then
         return value
     else
-        print("Error. Key not found.")
+        warn("Error. Key not found or empty.")
         return false
     end
 end
