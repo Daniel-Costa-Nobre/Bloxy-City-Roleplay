@@ -26,11 +26,11 @@ end
 
 -- Changes the full data table of the player Id (local help)
 local function setFullData(player, value)
-    local sucess = pcall(function()
-        DataStore:SetAsync(getId(player), value)
+    local success = pcall(function()
+        DataStore:SetAsync(tostring(getId(player)), value)
     end)
 
-    if sucess then return true else warn("Error. Failed to set the user's Id ", getId(player), "data.") return false end
+    if success then return true else warn("Error. Failed to set the user's Id ", getId(player), "data.") return nil end
 end
 
 -- Practical Functions
@@ -38,13 +38,16 @@ function DataStoreHandler.changeData(player, key, value)
     -- Get full table
     local data = getFullData(player)
 
-    if #data == 0 then
+    if data == nil then
         print("Player datastore is currently empty.")
+        data = {}
     end
+
     -- Communicate if the key was not there before
     if not data[key] then
         print("Adding new key...")
     end
+
     -- Find and change key
     data[key] = value
 
@@ -56,29 +59,43 @@ end
 
 function DataStoreHandler.loadData(player, key)
     -- Get full table
-    local data = getFullData(player)
+    local data = getFullData(player) or {}
 
     -- Try to fetch value from key
-    local success, value = pcall(function()
+    if data and data[key] ~= nil then
         return data[key]
-    end)
-
-    -- Return value if possible
-    if success and value then
-        return value
     else
         warn("Error. Key not found or empty.")
-        return false
+        return nil
     end
 end
 
 -- Tecnical Diagnostic Functions
-function DataStoreHandler.resetPlayerData(playerId)
-    -- Build here a function that resets all player data to nil
+function DataStoreHandler.resetPlayerData(player)
+    -- Resets all player data to nil
+    local success = pcall(function()
+        return DataStore:SetAsync(getId(player), nil)
+    end)
+
+    if success then
+        print("All player data deleted.")
+    else
+        warn("Error. Failed to delete player data.")
+    end
 end
 
-function DataStoreHandler.deleteKey(playerId, key)
-    -- Build here a function that deletes the given key
+function DataStoreHandler.deleteKey(player, key)
+    -- Get table
+    local data = getFullData(player) or {}
+
+    -- Delete data
+    print("Deleting key \"" .. key .. "\" that contains \"" .. tostring(data[key]) .. "\" value...")
+    data[key] = nil
+
+    -- Update database
+    local procedureAnswer = setFullData(player, data)
+
+    if procedureAnswer then print("Key deleted.") end
 end
 
 return DataStoreHandler
