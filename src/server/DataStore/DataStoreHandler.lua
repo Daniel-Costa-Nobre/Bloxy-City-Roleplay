@@ -70,6 +70,20 @@ function DataStoreHandler.loadData(player, key)
     end
 end
 
+function DataStoreHandler.deleteKey(player, key)
+    -- Get table
+    local data = getFullData(player) or {}
+
+    -- Delete data
+    print("Deleting key \"" .. key .. "\" that contains \"" .. tostring(data[key]) .. "\" value...")
+    data[key] = nil
+
+    -- Update database
+    local procedureAnswer = setFullData(player, data)
+
+    if procedureAnswer then print("Key deleted.") return true else return false end
+end
+
 -- Tecnical Diagnostic Functions
 function DataStoreHandler.clearPlayerData(player)
     -- Resets all player data to nil
@@ -84,18 +98,5 @@ function DataStoreHandler.clearPlayerData(player)
     end
 end
 
-function DataStoreHandler.deleteKey(player, key)
-    -- Get table
-    local data = getFullData(player) or {}
-
-    -- Delete data
-    print("Deleting key \"" .. key .. "\" that contains \"" .. tostring(data[key]) .. "\" value...")
-    data[key] = nil
-
-    -- Update database
-    local procedureAnswer = setFullData(player, data)
-
-    if procedureAnswer then print("Key deleted.") end
-end
 
 return DataStoreHandler
