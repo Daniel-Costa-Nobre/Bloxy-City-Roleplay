@@ -168,10 +168,10 @@ local styleKeys = {"Modern", "Classic", "Industrial", "Rustic", "Luxury", "Anate
 for index, part in ipairs(platesfolder) do
 	if part.Name == "Plate" then
 		-- Get Required Structure Builder
-		local constructor = require(script.Parent.Parent.StructureBuilders:FindFirstChild(plate:GetAttribute("ModuleRequirement")))
+		local constructor = require(script.Parent.Parent.StructureBuilders:FindFirstChild(part:GetAttribute("ModuleRequirement")))
 
 		-- Build Basic Structure (Structure with all bricks, structural rods, light systems, placeholders and texture pannels)
-		local newStructure = constructor.buildBasicStructure(plate, MinimalHouseBasicElementSets["default"], structuresFolder)
+		local newStructure = constructor.buildBasicStructure(part, MinimalHouseBasicElementSets["default"], structuresFolder)
 
 		-- Build Basic elements (Doors, Windows and more)
 		constructor.buildBasicElements(newStructure)
