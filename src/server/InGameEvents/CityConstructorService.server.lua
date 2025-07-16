@@ -1,6 +1,4 @@
--- Build basic structures
---[[
--- Get plates
+-- Get plates folder
 local platesfolder = workspace.Place.LocationPlates:GetChildren()
 
 -- Structures folder
@@ -8,7 +6,7 @@ local structuresFolder = workspace.Place.Houses
 
 -- Possible Structures
 local possibleStructures = {
-	"MinimalHouse",
+	"MinimalHouse"
 }
 
 local houseStyles = {
@@ -167,10 +165,10 @@ local styleKeys = {"Modern", "Classic", "Industrial", "Rustic", "Luxury", "Anate
 
 
 -- Create structures
-for index, plate in pairs(platesfolder) do
-	if plate.Name == "Plate" then
+for index, part in ipairs(platesfolder) do
+	if part.Name == "Plate" then
 		-- Get Required Structure Builder
-		local constructor = require(script.Parent.Parent.StructureBuilders:FindFirstChild(plate:GetAttribute("Structure")))
+		local constructor = require(script.Parent.Parent.StructureBuilders:FindFirstChild(plate:GetAttribute("ModuleRequirement")))
 
 		-- Build Basic Structure (Structure with all bricks, structural rods, light systems, placeholders and texture pannels)
 		local newStructure = constructor.buildBasicStructure(plate, MinimalHouseBasicElementSets["default"], structuresFolder)
@@ -182,8 +180,6 @@ for index, plate in pairs(platesfolder) do
 		if newStructure.Name == "MinimalHouse" then
 			-- Apply new textures
 			local chosenStyle = styleKeys[(index % #styleKeys) + 1] -- Cycle through styles
-			print(chosenStyle)
-			print(houseStyles[chosenStyle])
 			constructor.buildWallTextures(newStructure, houseStyles[chosenStyle])
 		end
 
@@ -191,4 +187,3 @@ for index, plate in pairs(platesfolder) do
 		task.wait(0.1)
 	end
 end
-]]
