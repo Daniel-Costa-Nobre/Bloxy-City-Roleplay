@@ -63,7 +63,7 @@ function DataStoreHandler.loadData(player, key)
 
     -- Try to fetch value from key
     if data and data[key] ~= nil then
-        return data[key], true
+        return true, data[key]
     else
         warn("Error. Key not found or empty.")
         return nil, nil
