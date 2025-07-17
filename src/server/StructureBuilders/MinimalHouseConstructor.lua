@@ -294,6 +294,8 @@ function Constructor.buildBasicElements(newHouse)
 		-- Clone the light before applying transformations
 		local newLight = light:Clone()
 		
+		-- Rename light
+		newLight.Name = "LightModel"
 		-- Fix Position
 		if newLight.PrimaryPart then
 			local newPosition = lightPlaceHolder.Position
