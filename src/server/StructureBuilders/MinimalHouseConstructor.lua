@@ -296,6 +296,7 @@ function Constructor.buildBasicElements(newHouse)
 		
 		-- Rename light
 		newLight.Name = "LightModel"
+		
 		-- Fix Position
 		if newLight.PrimaryPart then
 			local newPosition = lightPlaceHolder.Position
