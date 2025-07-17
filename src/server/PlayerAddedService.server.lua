@@ -18,6 +18,7 @@ local function hasValue(tbl, value)
 end
 
 local function teleportCharacter(character, position)
+    print("Teleporting to ", position)
     local hrp = character:WaitForChild("HumanoidRootPart")
     hrp.CFrame = CFrame.new(position)
 end
@@ -74,7 +75,7 @@ Players.PlayerAdded:Connect(function(player)
         local spawnPosition = toVector3(posX, posY, posZ)
 
         -- Check if it's the default spawn position
-        if (posX == 0 and posY == 0 and posZ == 0) or hasValue(defaultSpawnPositionsXYZ, spawnPosition) then 
+        if (posX == 0 or posY == 0 or posZ == 0) or hasValue(defaultSpawnPositionsXYZ, spawnPosition) then 
             -- Assign one of the default values to the database and spawn
             local randomInteger = math.random(1,8)
             local chosenPos = defaultSpawnPositionsXYZ[randomInteger]
