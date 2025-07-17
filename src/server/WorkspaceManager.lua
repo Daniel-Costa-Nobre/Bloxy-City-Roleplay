@@ -12,17 +12,18 @@ function WorkspaceManager.getAllInstancesFromPath(path)
         for _, inst in ipairs(currentInstances) do
             if currentName == "ANY" or inst.Name == currentName then
                 if cycle == #path then
-                    if inst.Name == target then
+                    -- ✅ handle ANY as a wildcard target
+                    if target == "ANY" or inst.Name == target then
                         table.insert(collected, inst)
                     end
                 else
                     recurse(inst:GetChildren(), cycle + 1)
                 end
             end
+            task.wait()
         end
     end
 
-    -- start recursion without ever exposing cycle to the caller
     recurse(workspace.Place:GetChildren())
 
     return collected
