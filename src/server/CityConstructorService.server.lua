@@ -165,7 +165,7 @@ local styleKeys = {"Modern"--[[, "Classic", "Industrial", "Rustic", "Luxury", "A
 for index, part in ipairs(platesfolder) do
 	if part.Name == "Plate" then
 		-- Get Required Structure Builder
-		local constructor = require(script.Parent.Parent.StructureBuilders:FindFirstChild(part:GetAttribute("ModuleRequirement")))
+		local constructor = require(script.Parent.StructureBuilders:FindFirstChild(part:GetAttribute("ModuleRequirement")))
 
 		-- Build Basic Structure (Structure with all bricks, structural rods, light systems, placeholders and texture pannels)
 		local newStructure = constructor.buildBasicStructure(part, MinimalHouseBasicElementSets["default"], structuresFolder)
@@ -184,3 +184,5 @@ for index, part in ipairs(platesfolder) do
 		task.wait(0.1)
 	end
 end
+
+workspace.Place:SetAttribute("IsLoaded", true)

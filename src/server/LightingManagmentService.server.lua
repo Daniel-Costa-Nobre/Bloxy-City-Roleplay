@@ -23,3 +23,47 @@ while true do
     end
 end
 
+-- Get all useful folders
+local MinimalHouseLightsFolder = WorkspaceManager.getAllInstancesFromPath(PathInstructions.MinimalHouse.Light)
+
+for _, LightSctructure in pairs(MinimalHouseLightsFolder) do
+    -- Fetch important instances inside the light structure
+    local proximityPrompt = LightSctructure:FindFirstChild("Interruptor"):FindFirstChild("MainBody"):FindFirstChild("Union"):FindFirstChild("ProximityPrompt")
+    local onSwitch = LightSctructure:FindFirstChild("Interruptor"):FindFirstChild("On")
+    local offSwitch = LightSctructure:FindFirstChild("Interruptor"):FindFirstChild("Off")
+    local switchSound = LightSctructure:FindFirstChild("Interruptor"):FindFirstChild("MainBody"):FindFirstChild("Union"):FindFirstChild("SwitchSound")
+    local spotLight = LightSctructure:FindFirstChild("LIGHTPLACEHOLDER"):FindFirstChild("LightModel"):FindFirstChild("LightPart"):FindFirstChild("ArtificialLight")
+
+    proximityPrompt.Triggered:Connect(function()
+        if spotLight.Enabled then
+            -- Disable light
+            spotLight.Enabled = false
+
+            -- Reset sound and play again
+            switchSound:Stop()
+            switchSound:Play()
+
+            -- Visible change
+            onSwitch.Transparency = 0
+            offSwitch.Transparency = 1
+            proximityPrompt.ActionText = "Turn on"
+        else
+            -- Enable light
+            spotLight.Enabled = true
+
+            -- Reset sound and play again
+            switchSound:Stop()
+            switchSound:Play()
+
+            -- Visible change
+            onSwitch.Transparency = 1
+            offSwitch.Transparency = 0
+            proximityPrompt.ActionText = "Turn off"
+        end
+
+        -- Cooldown
+        proximityPrompt.Enabled = false
+        task.wait(0.5)
+        proximityPrompt.Enabled = true
+    end)
+end
