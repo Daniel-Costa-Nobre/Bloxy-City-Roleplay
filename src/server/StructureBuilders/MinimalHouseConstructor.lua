@@ -183,6 +183,7 @@ function Constructor.buildBasicElements(newHouse)
 
 		-- Clone the door before applying transformations
 		local newDoor = door:Clone()
+		newDoor.Name = "DoorModel"
 
 		-- Fix Position
 		if newDoor.PrimaryPart then
@@ -228,8 +229,10 @@ function Constructor.buildBasicElements(newHouse)
 		
 		if isWindowA then
 			newWindow = windowA:Clone()
+			newWindow.Name = "WindowModel"
 		else
 			newWindow = windowB:Clone()
+			newWindow.Name = "SmallWindowModel"
 		end
 		
 		-- Fix Position
@@ -260,7 +263,8 @@ function Constructor.buildBasicElements(newHouse)
 	
 	-- Clone the garage door before applying transformations
 	local newGarageDoor = garageDoor:Clone()
-	
+	newGarageDoor.Name = "GarageDoorModel"
+
 	-- Fix Position
 	if newGarageDoor.PrimaryPart then
 		local newPosition = garageDoorPlaceHolder.Position
@@ -293,8 +297,6 @@ function Constructor.buildBasicElements(newHouse)
 		
 		-- Clone the light before applying transformations
 		local newLight = light:Clone()
-		
-		-- Rename light
 		newLight.Name = "LightModel"
 		
 		-- Fix Position
