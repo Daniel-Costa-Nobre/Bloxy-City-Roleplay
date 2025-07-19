@@ -34,6 +34,8 @@ for _, LightSctructure in pairs(MinimalHouseLightsFolder) do
 
     proximityPrompt.Triggered:Connect(function()
         if spotLight.Enabled then
+            proximityPrompt.ActionText = ""
+            proximityPrompt.Enabled = false
             -- Disable light
             spotLight.Enabled = false
 
@@ -44,8 +46,9 @@ for _, LightSctructure in pairs(MinimalHouseLightsFolder) do
             -- Visible change
             onSwitch.Transparency = 0
             offSwitch.Transparency = 1
-            proximityPrompt.ActionText = "Turn on"
         else
+            proximityPrompt.ActionText = ""
+            proximityPrompt.Enabled = false
             -- Enable light
             spotLight.Enabled = true
 
@@ -56,12 +59,12 @@ for _, LightSctructure in pairs(MinimalHouseLightsFolder) do
             -- Visible change
             onSwitch.Transparency = 1
             offSwitch.Transparency = 0
-            proximityPrompt.ActionText = "Turn off"
         end
 
         -- Cooldown
-        proximityPrompt.Enabled = false
         task.wait(0.5)
+        if spotLight.Enabled then proximityPrompt.ActionText = "Turn off" else proximityPrompt.ActionText = "Turn on" end
+
         proximityPrompt.Enabled = true
     end)
 end

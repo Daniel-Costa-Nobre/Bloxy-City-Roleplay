@@ -92,14 +92,11 @@ end
 
 for _, garageDoor in pairs(MinimalHouseGarageDoors) do
     -- Fetching important instances
-    local forcefieldA = garageDoor:FindFirstChild("ForcefieldA")
-    local forcefieldB = garageDoor:FindFirstChild("ForcefieldB")
     local garageOpen = garageDoor:FindFirstChild("PartC"):FindFirstChild("Union")
     local garageClosed1 = garageDoor:FindFirstChild("PartA"):FindFirstChild("Union")
     local garageClosed2 = garageDoor:FindFirstChild("PartB"):FindFirstChild("Union")
-    
+    local shadowPart = garageDoor:FindFirstChild("ShadowPart")
     local proxA = garageDoor:FindFirstChild("ForcefieldA"):FindFirstChild("ProximityPromptA")
-    local proxB = garageDoor:FindFirstChild("ForcefieldB"):FindFirstChild("ProximityPromptB")
 
     local sound = garageDoor:FindFirstChild("ForcefieldA"):FindFirstChild("Sound")
 
@@ -108,65 +105,31 @@ for _, garageDoor in pairs(MinimalHouseGarageDoors) do
         if proxA.ActionText == "Open" then
             garageOpen.Transparency = 0
             garageOpen.CanCollide = true
+
             garageClosed1.Transparency = 1
             garageClosed2.Transparency = 1
+            shadowPart.Transparency = 1
+
             garageClosed1.CanCollide = false
             garageClosed2.CanCollide = false
-
+            
             sound.Playing = true
             
             proxA.ActionText = "Close"
-            proxB.ActionText = "Close"
-            
-            proxB.Enabled = false
         else
             garageOpen.Transparency = 1
             garageOpen.CanCollide = false
+
             garageClosed1.Transparency = 0
             garageClosed2.Transparency = 0
+            shadowPart.Transparency = 0
+
             garageClosed1.CanCollide = true
             garageClosed2.CanCollide = true
 
             sound.Playing = true
 
             proxA.ActionText = "Open"
-            proxB.ActionText = "Open"
-            
-            proxA.Enabled = true
-            proxB.Enabled = true
-        end
-    end)
-
-    proxB.Triggered:Connect(function()
-        if proxA.ActionText == "Open" then
-            garageOpen.Transparency = 0
-            garageOpen.CanCollide = true
-            garageClosed1.Transparency = 1
-            garageClosed2.Transparency = 1
-            garageClosed1.CanCollide = false
-            garageClosed2.CanCollide = false
-
-            sound.Playing = true
-
-            proxA.ActionText = "Close"
-            proxB.ActionText = "Close"
-            
-            proxA.Enabled = false
-        else
-            garageOpen.Transparency = 1
-            garageOpen.CanCollide = false
-            garageClosed1.Transparency = 0
-            garageClosed2.Transparency = 0
-            garageClosed1.CanCollide = true
-            garageClosed2.CanCollide = true
-
-            sound.Playing = true
-
-            proxA.ActionText = "Open"
-            proxB.ActionText = "Open"
-            
-            proxA.Enabled = true
-            proxB.Enabled = true
         end
     end)
 end
