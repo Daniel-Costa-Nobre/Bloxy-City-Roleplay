@@ -26,7 +26,7 @@ local MinimalHouseLightsFolder = WorkspaceManager.getAllInstancesFromPath(PathIn
 
 for _, LightSctructure in pairs(MinimalHouseLightsFolder) do
     -- Fetch important instances inside the light structure
-    local proximityPrompt = LightSctructure:FindFirstChild("Interruptor"):FindFirstChild("MainBody"):FindFirstChild("Union"):FindFirstChild("ProximityPrompt")
+    local proximityPrompt = LightSctructure:FindFirstChild("Interruptor"):FindFirstChild("ProximityPromptPart"):FindFirstChild("ProximityPrompt")
     local onSwitch = LightSctructure:FindFirstChild("Interruptor"):FindFirstChild("On")
     local offSwitch = LightSctructure:FindFirstChild("Interruptor"):FindFirstChild("Off")
     local switchSound = LightSctructure:FindFirstChild("Interruptor"):FindFirstChild("MainBody"):FindFirstChild("Union"):FindFirstChild("SwitchSound")

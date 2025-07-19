@@ -159,7 +159,7 @@ local MinimalHouseBasicElementSets = {
 	}
 }
 
-local styleKeys = {"Modern"--[[, "Classic", "Industrial", "Rustic", "Luxury", "AnateciasDesignA"]]}
+local styleKeys = {"Modern", "Classic", "Industrial", "Rustic", "Luxury", "AnateciasDesignA"}
 
 -- Create structures
 for index, part in ipairs(platesfolder) do
